@@ -18,11 +18,13 @@
   "scripts": {
     "build:dev": "tsc --watch",
     "build": "tsc",
-    "start:dev": "NODE_ENV=development nodemon ./dist/index",
-    "start": "NODE_ENV=production node ./dist/index",
-    "test": "./node_modules/.bin/jest",
-    "cov": "./node_modules/.bin/jest --collect-coverage",
-    "lint": "./node_modules/.bin/eslint --fix ./src/*.ts ./src/**/*.ts"
+    "st:dev": "NODE_ENV=development nodemon ./dist/index",
+    "st": "NODE_ENV=production node ./dist/index",
+    "start:dev": "nodemon ./dist/index",
+    "start": "node server.js",
+    "test": "jest",
+    "cov": "jest --collect-coverage",
+    "lint": "eslint --fix ./src/*.ts ./src/**/*.ts"
   },
   "dependencies": {
     "fastify": "^3.29.5",
@@ -30,6 +32,7 @@
     "fastify-static": "^3.4.0",
     "glob": "^7.2.3",
     "mongoose": "^6.12.6",
+    "nodemon": "^3.0.3",
     "reflect-metadata": "^0.1.14",
     "tsyringe": "^4.8.0"
   },
