@@ -1,22 +1,27 @@
-const fs = require('fs').promises
-const path = require('path')
-const { v4: uuidv4 } = require('uuid');
+import fs from 'fs/promises'
+import path from 'path'
+import { fileURLToPath } from 'url';
+import { uuid } from 'uuidv4';
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const contactsPath = path.join(__dirname, '..', 'db', 'contacts.json')
+// console.log(fileURLToPath(import.meta.url));
 
-const listContacts = async () => {
+export const listContacts = async () => {
   const res = JSON.parse(await fs.readFile(contactsPath))
+  console.log(res);
   return res
 }
 
-
-const getContactById = async (id) => {
+export const getContactById = async (id) => {
   const list = await listContacts()
   const contact = list.find((obj) => obj.id === id)
   return contact ? contact : null
 }
 
-const removeContact = async (id) => {
+export const removeContact = async (id) => {
   const list = await listContacts()
   const index = list.findIndex(obj => obj.id === id)
   if (index === -1) {
@@ -28,28 +33,19 @@ const removeContact = async (id) => {
 }
 
 
-const addConntact = async (data) => {
+export const addConntact = async (data) => {
   const list = await listContacts()
-  const contact = { id: uuidv4(), ...data }
+  const contact = { id: uuid(), ...data }
   list.push(contact)
   await fs.writeFile(contactsPath, JSON.stringify(list, null, 2))
   return contact
 }
 
 
-const patchContact = async (id, data) => {
+export const patchContact = async (id, data) => {
   const list = await listContacts()
   const index = list.findIndex(obj => id === obj.id)
   list[index] = { id, ...data }
   await fs.writeFile(contactsPath, JSON.stringify(list, null, 2))
   return list[index]
-}
-
-
-module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addConntact,
-  patchContact
 }
