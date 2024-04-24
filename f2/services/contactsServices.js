@@ -11,7 +11,6 @@ const contactsPath = path.join(__dirname, '..', 'db', 'contacts.json')
 
 export const listContacts = async () => {
   const res = JSON.parse(await fs.readFile(contactsPath))
-  console.log(res);
   return res
 }
 
