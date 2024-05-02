@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid'
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,8 +33,9 @@ export const removeContact = async (id) => {
 
 
 export const addConntact = async (data) => {
+  console.log(data);
   const list = await listContacts()
-  const contact = { id: uuid(), ...data }
+  const contact = { id: uuidv4(), ...data }
   list.push(contact)
   await fs.writeFile(contactsPath, JSON.stringify(list, null, 2))
   return contact

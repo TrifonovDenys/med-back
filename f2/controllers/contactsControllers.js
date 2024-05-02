@@ -1,4 +1,4 @@
-import {listContacts, getContactById, removeContact, addConntact, patchContact} from "../services/contactsServices.js";
+import { listContacts, getContactById, removeContact, addConntact, patchContact } from "../services/contactsServices.js";
 
 export const getAllContacts = async (req, res) => {
   const contacts = await listContacts()
@@ -6,12 +6,22 @@ export const getAllContacts = async (req, res) => {
 };
 
 export const getOneContact = async (req, res) => {
-  const constact = await getOneContact()
+  const constact = await getContactById(req.params.id)
   res.status(200).json(constact)
 };
 
-export const deleteContact = (req, res) => { };
+export const deleteContact = async (req, res) => {
+  const constact = await removeContact(req.params.id)
+  res.status(200).json(constact)
+};
 
-export const createContact = (req, res) => { };
+export const createContact = async (req, res) => {
+  const contact = await addConntact(req.body)
+  res.status(201).json(contact)
+};
 
-export const updateContact = (req, res) => { };
+export const updateContact = async (req, res) => {
+  console.log(Object.keys(req.body).length);
+  const contact = await patchContact(req.params.id, req.body)
+  res.status(200).json(contact)
+};
