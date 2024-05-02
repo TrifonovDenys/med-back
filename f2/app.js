@@ -6,7 +6,7 @@ import contactsRouter from "./routes/contactsRouter.js";
 
 dotenv.config()
 
-console.log(process.env.SECRET_KEY);
+// console.log(process.env.SECRET_KEY);
 const app = express();
 
 app.use(morgan("tiny"));
@@ -24,6 +24,6 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("Server is running. Use our API on port: 3000");
 });
