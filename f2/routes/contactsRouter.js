@@ -23,4 +23,8 @@ contactsRouter.post("/", validateBody(createContactSchema), createContact);
 
 contactsRouter.put("/:id", validateBody(updateContactSchema), updateContact);
 
+// contactsRouter.route('/').get(getAllContacts).post(createContact)
+
+// contactsRouter.route('/:id',).get(getOneContact).delete(deleteContact).patch(updateContact)
+
 export default contactsRouter;
