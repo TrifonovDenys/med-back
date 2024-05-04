@@ -1,12 +1,18 @@
 {
   "name": "api",
   "type": "module",
+  "main": "app.js",
   "scripts": {
     "start": "node ./app.js",
-    "dev": "nodemon ./app.js"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "prod": "cross-env NODE_ENV=production node app.js",
+    "dev1": "nodemon --env-file=./env/dev.env app.js",
+    "prod2": "node --env-file=./env/prod.env app.js"
   },
+  "keywords": [],
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "joi": "^17.11.0",

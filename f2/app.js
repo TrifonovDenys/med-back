@@ -4,9 +4,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import contactsRouter from './routes/contactsRouter.js';
 
-dotenv.config();
+dotenv.config({
+    path: (process.env.NODE_ENV = 'productions' ? './env/prod.env' : './env/dev.env'),
+});
 
-console.log(process.env.NODE_ENV);
 const app = express();
 
 app.use(morgan('tiny'));
@@ -24,6 +25,6 @@ app.use((err, req, res, next) => {
     res.status(status).json({ message });
 });
 
-app.listen(3001, () => {
-    console.log('Server is running. Use our API on port: 3001');
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running. Use our API on port: ${process.env.PORT}`);
 });
