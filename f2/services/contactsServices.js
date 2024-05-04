@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const contactsPath = path.join(__dirname, '..', 'db', 'contacts.json');
-console.log(fileURLToPath(import.meta.url));
+// console.log(fileURLToPath(import.meta.url));
 
 export const listContacts = async () => {
     const res = JSON.parse(await fs.readFile(contactsPath));

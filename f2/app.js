@@ -5,11 +5,10 @@ import dotenv from 'dotenv';
 import contactsRouter from './routes/contactsRouter.js';
 
 dotenv.config({
-    path: (process.env.NODE_ENV = 'productions' ? './env/prod.env' : './env/dev.env'),
+    path: (process.env.NODE_ENV === 'productions' ? './env/prod.env' : './env/dev.env'),
 });
 
 const app = express();
-
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
