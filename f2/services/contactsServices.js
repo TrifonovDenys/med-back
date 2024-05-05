@@ -3,6 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 
+// import User from '../models/userModel';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const contactsPath = path.join(__dirname, '..', 'db', 'contacts.json');
@@ -42,6 +44,15 @@ export const patchContact = async (id, data) => {
     const list = await listContacts();
     const index = list.findIndex((obj) => id === obj.id);
     list[index] = { id, ...data };
+    await fs.writeFile(contactsPath, JSON.stringify(list, null, 2));
+    return list[index];
+};
+
+export const patchStatusContact = async (id, data) => {
+    const list = await listContacts();
+    const index = list.findIndex((obj) => id === obj.id);
+    console.log(list[index]);
+    list[index] = { ...list[index], ...data };
     await fs.writeFile(contactsPath, JSON.stringify(list, null, 2));
     return list[index];
 };

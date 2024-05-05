@@ -1,15 +1,27 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 import contactsRouter from './routes/contactsRouter.js';
 
 dotenv.config({
-    path: (process.env.NODE_ENV === 'productions' ? './env/prod.env' : './env/dev.env'),
+    path: process.env.NODE_ENV === 'productions' ? './env/prod.env' : './env/dev.env',
 });
 
 const app = express();
+
+mongoose
+    .connect(process.env.MONGODB)
+    // eslint-disable-next-line no-console
+    .then((con) => console.log('Database connection successful'))
+    .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+        process.exit(1);
+    });
+
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());

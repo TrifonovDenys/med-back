@@ -16,6 +16,7 @@
     "simple-import-sort"
   ],
   "rules": {
+    "no-unused-vars": "off",
     "indent": "off",
     "no-tabs": 0,
     "no-underscore-dangle": 0,
