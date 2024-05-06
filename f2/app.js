@@ -13,7 +13,11 @@ dotenv.config({
 const app = express();
 
 mongoose
-    .connect(process.env.MONGODB)
+    .connect(process.env.MONGODB, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+    })
     // eslint-disable-next-line no-console
     .then((con) => console.log('Database connection successful'))
     .catch((err) => {
