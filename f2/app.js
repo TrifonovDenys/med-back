@@ -5,9 +5,10 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 import contactsRouter from './routes/contactsRouter.js';
+import userRouter from './routes/userRouter.js';
 
 dotenv.config({
-    path: process.env.NODE_ENV === 'productions' ? './env/prod.env' : './env/dev.env',
+    path: process.env.NODE_ENV === 'productions' ? './env/.env.prod' : './env/.env.dev',
 });
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/contacts', contactsRouter);
+app.use('/api/user', userRouter);
 
 app.use((_, res) => {
     res.status(404).json({ message: 'Route not found' });
