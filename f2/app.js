@@ -12,16 +12,15 @@ dotenv.config({
 });
 
 const app = express();
-
 mongoose
-    .connect(process.env.MONGODB)
+    .connect(process.env.MONGODB);
     // eslint-disable-next-line no-console
-    .then((con) => console.log('Database connection successful'))
-    .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        process.exit(1);
-    });
+    // .then((con) => console.log('Database connection successful'))
+    // .catch((err) => {
+    //     // eslint-disable-next-line no-console
+    //     console.log(err);
+    //     process.exit(1);
+    // });
 
 app.use(morgan('tiny'));
 app.use(cors());

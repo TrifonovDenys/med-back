@@ -17,7 +17,7 @@ const user = mongoose.Schema(
     },
 );
 
-//pre save mongoose hook
+// pre save mongoose hook
 user.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     const salt = await genSalt(10);

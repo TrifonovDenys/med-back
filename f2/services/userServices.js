@@ -1,6 +1,6 @@
 import User from '../models/userModel.js';
 
-/**Create user sservice
+/** Create user sservice
  * @param { Object } userData
  * @returns {Promise<User>}
  * @category services
@@ -11,20 +11,20 @@ export const createUser = async (userData) => {
     return newUser;
 };
 
-/**Get All users service
+/** Get All users service
  * @returns {Promise<User[]>}
  * @category services
  */
 export const getAllUsers = () => User.find();
 
-/**Get one user service
+/** Get one user service
  * @param { string } id
  * @returns {Promise<User>}
  * @category services
  */
 export const getOneUser = (id) => User.findById(id);
 
-/**Update user data service
+/** Update user data service
  * @param { string } id
  * @param { Object } userData
  * @returns {Promise<User>}

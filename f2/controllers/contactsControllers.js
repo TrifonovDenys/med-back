@@ -2,8 +2,6 @@ import HttpError from '../helpers/HttpError.js';
 import Contact from '../models/contactModel.js';
 
 export const getAllContact = async (req, res) => {
-    try {
-    } catch (err) {}
     const contacts = await Contact.find();
     res.status(200).json(contacts);
 };
