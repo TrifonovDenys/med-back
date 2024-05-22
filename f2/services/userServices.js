@@ -38,3 +38,10 @@ export const updateUser = async (id, userData) => {
     const updatedUser = await user.save();
     return updatedUser;
 };
+
+/** Get one user service
+ * @param { string } id
+ * @returns {Promise<User>}
+ * @category services
+ */
+export const deleteUser = (id) => User.findbyIdAndDelete(id);

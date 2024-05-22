@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
-import { createUser, getAllUsers, getOneUser, updateUser } from '../services/userServices.js';
+import { createUser, deleteUser, getAllUsers, getOneUser, updateUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
 const userController = {
@@ -35,6 +35,10 @@ const userController = {
             msg: 'Succsess',
             user: updatedUser,
         });
+    }),
+    deleteUser: catchAsync(async (req, res) => {
+        await deleteUser(req.params.id);
+        res.status(204);
     }),
     // updateUserAvatar: catchAsync(async (req, res) => {}),
 };
