@@ -1,5 +1,6 @@
-import { genSalt, hash } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 
 const user = mongoose.Schema(
     {
@@ -24,5 +25,13 @@ user.pre('save', async function (next) {
     this.password = await hash(this.password, salt);
     next();
 });
+
+/**
+ * Castom mongoose method to validate password
+ * @param {string} candidate
+ * @param {string} passwordHash
+ * @returns {Promise<boolean}
+ */
+user.methods.checkPassword = (candidate, passwordHash) => compare(candidate, passwordHash);
 
 export default mongoose.model('User', user);

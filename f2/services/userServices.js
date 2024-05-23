@@ -45,3 +45,12 @@ export const updateUser = async (id, userData) => {
  * @category services
  */
 export const deleteUser = (id) => User.findbyIdAndDelete(id);
+
+export const checkUserExistById = (id) => {
+    // const idIsValid = Types.ObjectId.isValid(id);
+    // if (!idIsValid) throw HttpError(404, 'User not found..');
+    // const userExist = User.find({ _id: id });
+    // if (!userExist) throw HttpError(404, 'User not found..');
+};
+
+export const checkUserExistByEmail = (email) => {};
