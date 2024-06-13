@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 import contactsRouter from './routes/contactsRouter.js';
 import userRouter from './routes/userRouter.js';
+import authRouter from './routes/authRouter.js';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'productions' ? './env/.env.prod' : './env/.env.dev',
@@ -26,6 +27,7 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRouter);
 app.use('/api/contacts', contactsRouter);
 app.use('/api/user', userRouter);
 

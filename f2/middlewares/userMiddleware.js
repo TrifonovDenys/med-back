@@ -9,3 +9,4 @@ export const checkUserId = catchAsync(async (req, res, next) => {
     await checkUserExistById(req.params.id);
     next();
 });
+
