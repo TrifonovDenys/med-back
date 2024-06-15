@@ -1,3 +1,4 @@
+import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
 
 /** Create user sservice
@@ -54,3 +55,30 @@ export const checkUserExistById = (id) => {
 };
 
 export const checkUserExistByEmail = (email) => {};
+
+export const checkUserExist = async (filter) => {
+    const userExists = await User.exists(filter)
+
+    if (userExists) throw new HttpError(409, 'User exists..')
+}
+
+export const signup = async (userData) => {
+
+    //скидываем права нового пльзоватля до user
+    const newUserData = {
+        ...userData,
+        role: 'user'
+    }
+
+    //создаем нового пользователя из newUserData
+    const newUser = User.create(newUserData)
+
+    //скидываем пароль чтобы не пошел дальше в res
+    newUser.password = undefined
+
+    //
+    const token = signToken(newUser.id)
+
+    return {user: newUser, token}
+
+}
