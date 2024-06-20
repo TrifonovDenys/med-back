@@ -1,6 +1,8 @@
+import { Types } from 'mongoose';
+
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
-import { signToken } from './jwtServise.js';
+import signToken from './jwtServise.js';
 
 /** Create user sservice
  * @param { Object } userData
@@ -48,11 +50,16 @@ export const updateUser = async (id, userData) => {
  */
 export const deleteUser = (id) => User.findbyIdAndDelete(id);
 
-export const checkUserExistById = (id) => {
-    // const idIsValid = Types.ObjectId.isValid(id);
-    // if (!idIsValid) throw HttpError(404, 'User not found..');
-    // const userExist = User.find({ _id: id });
-    // if (!userExist) throw HttpError(404, 'User not found..');
+export const checkUserExistById = async (id) => {
+    const idIsValid = Types.ObjectId.isValid(id);
+    if (!idIsValid) {
+        throw HttpError(400, 'Invalid user ID format'); // 400 for bad request
+    }
+    const userExist = await User.find({ _id: id });
+    if (!userExist) {
+        throw HttpError(404, 'User not found');
+    }
+    return userExist;
 };
 
 export const checkUserExistByEmail = (email) => {};
@@ -78,13 +85,12 @@ export const signupUser = async (userData) => {
 
     //
     const token = signToken(newUser.id);
-    console.log(token);
     return { user: newUser, token };
 };
 
 export const loginUser = async (userData) => {
     // поиск одного пользователя по email + достать 1 поле
-    const user = await User.findOne({ email: userData.email }).seleсt('+password');
+    const user = await User.findOne({ email: userData.email }).select('+password');
 
     if (!user) throw HttpError(401, 'Not autorized');
 
@@ -95,8 +101,10 @@ export const loginUser = async (userData) => {
     user.password = undefined;
     const token = signToken(user.id);
 
-    res.status(200).json({
-        user,
-        token,
-    });
+    // res.status(200).json({
+    //     user,
+    //     token,
+    // });
+
+    return { user, token };
 };

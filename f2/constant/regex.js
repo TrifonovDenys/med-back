@@ -1,4 +1,4 @@
-export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 /**
   Has minimum 8 characters in length. Adjust it by modifying {8,}
