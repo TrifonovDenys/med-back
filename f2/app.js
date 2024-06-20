@@ -4,14 +4,20 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 
+import authRouter from './routes/authRouter.js';
 import contactsRouter from './routes/contactsRouter.js';
 import userRouter from './routes/userRouter.js';
-import authRouter from './routes/authRouter.js';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'productions' ? './env/.env.prod' : './env/.env.dev',
 });
-
+// { { url } } /api/auth / signup
+// {
+//     "name": "Michail",
+//     "year": "1921",
+//     "email": "newuser123@gmail.com",
+//     "password": "newpass1"
+// }
 const app = express();
 mongoose
     .connect(process.env.MONGODB)

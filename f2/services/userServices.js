@@ -1,5 +1,6 @@
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
+import { signToken } from './jwtServise.js';
 
 /** Create user sservice
  * @param { Object } userData
@@ -7,7 +8,7 @@ import User from '../models/userModel.js';
  * @category services
  */
 export const createUser = async (userData) => {
-    const newUser = User.create(userData);
+    const newUser = await User.create(userData);
     newUser.password = undefined;
     return newUser;
 };
@@ -57,28 +58,45 @@ export const checkUserExistById = (id) => {
 export const checkUserExistByEmail = (email) => {};
 
 export const checkUserExist = async (filter) => {
-    const userExists = await User.exists(filter)
+    const userExists = await User.exists(filter);
 
-    if (userExists) throw new HttpError(409, 'User exists..')
-}
+    if (userExists) throw HttpError(409, 'User exists..');
+};
 
-export const signup = async (userData) => {
-
-    //скидываем права нового пльзоватля до user
+export const signupUser = async (userData) => {
+    // скидываем права нового пльзоватля до user
     const newUserData = {
         ...userData,
-        role: 'user'
-    }
+        role: 'user',
+    };
 
-    //создаем нового пользователя из newUserData
-    const newUser = User.create(newUserData)
+    // создаем нового пользователя из newUserData
+    const newUser = await User.create(newUserData);
 
-    //скидываем пароль чтобы не пошел дальше в res
-    newUser.password = undefined
+    // скидываем пароль чтобы не пошел дальше в res
+    newUser.password = undefined;
 
     //
-    const token = signToken(newUser.id)
+    const token = signToken(newUser.id);
+    console.log(token);
+    return { user: newUser, token };
+};
 
-    return {user: newUser, token}
+export const loginUser = async (userData) => {
+    // поиск одного пользователя по email + достать 1 поле
+    const user = await User.findOne({ email: userData.email }).seleсt('+password');
 
-}
+    if (!user) throw HttpError(401, 'Not autorized');
+
+    const passwordIsValid = await user.checkPassword(userData.password, user.password);
+
+    if (!passwordIsValid) throw HttpError(401, 'Not autorized');
+
+    user.password = undefined;
+    const token = signToken(user.id);
+
+    res.status(200).json({
+        user,
+        token,
+    });
+};

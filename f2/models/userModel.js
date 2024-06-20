@@ -1,5 +1,4 @@
 import { compare, genSalt, hash } from 'bcrypt';
-import { required } from 'joi';
 import mongoose from 'mongoose';
 
 const user = mongoose.Schema(
@@ -11,7 +10,7 @@ const user = mongoose.Schema(
         email: {
             type: String,
             required: [true, 'set email'],
-            unique: [true, 'Duplicated email..']
+            unique: [true, 'Duplicated email..'],
         },
         password: {
             type: String,
@@ -22,8 +21,8 @@ const user = mongoose.Schema(
         role: {
             type: String,
             enum: ['user', 'admin', 'moderator'],
-            default: 'user'
-        }
+            default: 'user',
+        },
     },
     {
         timestamps: true,

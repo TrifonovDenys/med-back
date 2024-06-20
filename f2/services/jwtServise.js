@@ -1,5 +1,11 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
-export const signToken = (id) => {
-  jwt.sign({ id }, 'asdasdasdasd')
-}
+/**
+ *
+ * @param {string} payload
+ * @returns {string} * jwt
+ */
+export const signToken = (payload) =>
+    jwt.sign({ payload }, process.env.jwtSecretAccessKey, {
+        expiresIn: '1d',
+    });

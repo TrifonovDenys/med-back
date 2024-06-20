@@ -1,7 +1,3 @@
-import bcrypt from 'bcrypt';
-
-import HttpError from '../helpers/HttpError.js';
-import User from '../models/userModel.js';
 import { createUser, deleteUser, getAllUsers, getOneUser, updateUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -14,7 +10,7 @@ const userController = {
         });
     }),
     createUser: catchAsync(async (req, res) => {
-        const newUser = createUser(req.body);
+        const newUser = await createUser(req.body);
         newUser.password = undefined;
         res.status(201).json({
             msg: 'Succsess',

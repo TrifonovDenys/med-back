@@ -1,10 +1,11 @@
-import express from 'express'
-import { checkSignupUserData } from '../middlewares/authMiddleware'
-import authController from '../controllers/authController'
+import express from 'express';
 
-const authRouter = express.Router() 
+import { login, signup } from '../controllers/authController.js';
+import { checkSignupUserData } from '../middlewares/authMiddleware.js';
 
-authRouter.post('/signup', checkSignupUserData, authController.signup)
-authRouter.post('/login', authController.login)
+const authRouter = express.Router();
 
-export default authRouter
+authRouter.post('/signup', checkSignupUserData, signup);
+authRouter.post('/login', login);
+
+export default authRouter;
