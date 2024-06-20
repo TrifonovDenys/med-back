@@ -51,7 +51,6 @@ export const patchContact = async (id, data) => {
 export const patchStatusContact = async (id, data) => {
     const list = await listContacts();
     const index = list.findIndex((obj) => id === obj.id);
-    console.log(list[index]);
     list[index] = { ...list[index], ...data };
     await fs.writeFile(contactsPath, JSON.stringify(list, null, 2));
     return list[index];
