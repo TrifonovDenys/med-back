@@ -17,7 +17,7 @@ const userController = {
             user: newUser,
         });
     }),
-    getUsersById: catchAsync(async (req, res) => {
+    getUser: catchAsync(async (req, res) => {
         const { id } = req.params;
         const user = await getOneUser(id);
         res.status(200).json({
@@ -36,6 +36,12 @@ const userController = {
         await deleteUser(req.params.id);
         res.status(204);
     }),
+    getMe: (req, res) => {
+        res.status(200).json({
+            msg: 'Succsess',
+            user: req.user,
+        });
+    },
     // updateUserAvatar: catchAsync(async (req, res) => {}),
 };
 

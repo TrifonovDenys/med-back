@@ -99,12 +99,8 @@ export const loginUser = async (userData) => {
     if (!passwordIsValid) throw HttpError(401, 'Not autorized');
 
     user.password = undefined;
-    const token = signToken(user.id);
 
-    // res.status(200).json({
-    //     user,
-    //     token,
-    // });
+    const token = signToken(user.id);
 
     return { user, token };
 };

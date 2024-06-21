@@ -1,7 +1,7 @@
-import HttpError from '../helpers/HttpError';
-import { singupUserValidator } from '../schemas/userValidators';
-import { checkUserExist, checkUserExistById } from '../services/userServices';
-import catchAsync from '../utils/catchAsync';
+import HttpError from '../helpers/HttpError.js';
+import { singupUserValidator, updateUserDataValidator } from '../schemas/userValidators.js';
+import { checkUserExist, checkUserExistById } from '../services/userServices.js';
+import catchAsync from '../utils/catchAsync.js';
 
 export const checkUserId = catchAsync(async (req, res, next) => {
     await checkUserExistById(req.params.id);
@@ -15,6 +15,18 @@ export const checkCreateUserData = catchAsync(async (req, res, next) => {
         throw HttpError(400, 'Invalid user data..');
     }
     await checkUserExist({ email: value.email });
+    req.body = value;
+
+    next();
+});
+
+export const checkUpdateUserData = catchAsync(async (req, res, next) => {
+    const { error, value } = updateUserDataValidator(req.body);
+
+    if (error) {
+        throw HttpError(400, 'Invalid user data..');
+    }
+    await checkUserExist({ email: value.email, _id: { $ne: req.paramsid } });
     req.body = value;
 
     next();
