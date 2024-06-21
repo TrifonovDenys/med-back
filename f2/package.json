@@ -8,7 +8,8 @@
     "prod": "cross-env NODE_ENV=production node app.js",
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "lint:fix": "eslint --fix ./**/*.{js,jsx,ts,tsx}",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "prepare": "husky"
   },
   "keywords": [],
   "eslintConfig": {
@@ -43,14 +44,14 @@
     "nodemon": "^3.0.1",
     "prettier": "2.8.6"
   },
-    "lint-staged": {
-      "**/*.{js, jsx, ts,tsx}": [
-          "eslint",
-          "prettier --write"
-      ]
+  "lint-staged": {
+    "**/*.{js, jsx, ts,tsx}": [
+      "eslint",
+      "prettier --write"
+    ]
   },
   "husky": {
-    "hooks" : {
+    "hooks": {
       "pre-commit": "lint-staaged"
     }
   }
