@@ -1,14 +1,16 @@
 import express from 'express';
 
 import userController from '../controllers/userController.js';
-import { protect } from '../middlewares/authMiddleware.js';
+import { allowFor, protect } from '../middlewares/authMiddleware.js';
 import { checkCreateUserData, checkUpdateUserData } from '../middlewares/userMiddleware.js';
 
 const userRouter = express.Router();
 
-userRouter.use(protect);
+// userRouter.use(protect);
 
-userRouter.get('/getMe', userController.getMe);
+// userRouter.get('/getMe', userController.getMe);
+
+// userRouter.use(allowFor('admin', 'moderator'));
 // userRouter.route('/').post(checkCreateUserData, userController.createUser).get(userController.getUsers);
 
 // userRouter

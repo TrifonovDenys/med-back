@@ -32,6 +32,6 @@ export const updateUserDataValidator = (data) =>
             name: Joi.string().min(3).max(12),
             year: Joi.string().min(1920).max(new Date().getFullYear()),
             email: Joi.string().regex(emailRegex),
-            role: Joi.string.valid('user', 'admin', 'moderator'),
+            role: Joi.string().valid('user', 'admin', 'moderator'),
         })
         .validate(data);
