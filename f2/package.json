@@ -8,8 +8,7 @@
     "prod": "cross-env NODE_ENV=production node app.js",
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "lint:fix": "eslint --fix ./**/*.{js,jsx,ts,tsx}",
-    "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "lint-staged": "lint-staged"
   },
   "keywords": [],
   "eslintConfig": {
@@ -49,5 +48,10 @@
           "eslint",
           "prettier --write"
       ]
+  },
+  "husky": {
+    "hooks" : {
+      "pre-commit": "lint-staaged"
+    }
   }
 }
