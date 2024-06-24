@@ -16,11 +16,10 @@ const signToken = (payload) =>
 export default signToken;
 
 export const checkToken = (token) => {
-    if (!token) throw HttpError(401, 'Not logged in ..');
+    if (!token) throw HttpError(401, 'Not logged in1 ..');
     try {
-        console.log(jwt.verify(token, process.env.jwtSecretAccessKey));
-        const { id } = jwt.verify(token, process.env.jwtSecretAccessKey);
-        return id;
+        const { payload } = jwt.verify(token, process.env.jwtSecretAccessKey);
+        return payload;
     } catch (err) {
         throw HttpError(401, 'Not logged in ..');
     }

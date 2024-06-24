@@ -7,5 +7,7 @@ const authRouter = express.Router();
 
 authRouter.post('/signup', checkSignupUserData, signup);
 authRouter.post('/login', login);
+// authRouter.post('forgor-password')
+// authRouter.posr('restor-password/<one-time-password>')
 
 export default authRouter;

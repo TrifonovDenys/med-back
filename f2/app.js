@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 import authRouter from './routes/authRouter.js';
 import contactsRouter from './routes/contactsRouter.js';
+import todoRouter from './routes/todoRouter.js';
 import userRouter from './routes/userRouter.js';
 
 dotenv.config({
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/contacts', contactsRouter);
 app.use('/api/users', userRouter);
+app.use('/api/todos', todoRouter);
 
 app.use((_, res) => {
     res.status(404).json({ message: 'Route not found' });

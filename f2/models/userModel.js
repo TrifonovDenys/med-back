@@ -10,7 +10,7 @@ const user = mongoose.Schema(
         email: {
             type: String,
             required: [true, 'set email'],
-            unique: [true, 'Duplicated email..'],
+            unique: true,
         },
         password: {
             type: String,

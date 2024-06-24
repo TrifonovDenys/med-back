@@ -19,7 +19,6 @@ export const protect = catchAsync(async (req, res, next) => {
     const token = req.headers.authorization?.startsWith('Bearer') && req.headers.authorization.split(' ')[1];
 
     const userId = checkToken(token);
-    console.log(userId);
     const currentUser = await getOneUser(userId);
 
     if (!currentUser) throw HttpError(401, 'Not logged in ..');
