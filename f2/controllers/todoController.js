@@ -16,7 +16,7 @@ const todoController = {
             msg: 'Succsess',
             todos,
             total,
-            owner: req.user,
+            user: req.user,
         });
     }),
 };

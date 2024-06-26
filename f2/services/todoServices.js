@@ -5,7 +5,10 @@ const todoServise = {
         const { title, description, due } = newTodoData;
         return Todo.create({ title, description, due, owner });
     },
-    getTodosList: async (query, user) => {},
+    getTodosList: async (filter, user) => {
+        const todos = await Todo.find().populate('owner');
+        return { todos, total: todos.length };
+    },
 };
 
 export default todoServise;
