@@ -1,13 +1,20 @@
 import express from 'express';
 
-import { login, signup } from '../controllers/authController.js';
-import { checkSignupUserData } from '../middlewares/authMiddleware.js';
+import authController from '../controllers/authController.js';
+import { checkLoginUserData, checkSignupUserData } from '../middlewares/authMiddleware.js';
 
 const authRouter = express.Router();
 
-authRouter.post('/signup', checkSignupUserData, signup);
-authRouter.post('/login', login);
-// authRouter.post('forgor-password')
-// authRouter.posr('restor-password/<one-time-password>')
+// const userCredentials = {
+//     email: 'admin@gmail.com',
+//     email: 'moderator@gmail.com',
+//     email: 'user@gmail.com',
+//     password: 'user1234',
+// };
+
+authRouter.post('/signup', checkSignupUserData, authController.signup);
+authRouter.post('/login', checkLoginUserData, authController.login);
+// authRouter.post('/forgor-password')
+// authRouter.post('/restor-password/<one-time-password>')
 
 export default authRouter;

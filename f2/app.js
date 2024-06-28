@@ -20,6 +20,7 @@ dotenv.config({
 //     "password": "newpass1"
 // }
 const app = express();
+
 mongoose
     .connect(process.env.MONGODB)
     // eslint-disable-next-line no-console
@@ -45,7 +46,9 @@ app.use((_, res) => {
 
 app.use((err, req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
-    res.status(err.status || 500).json({ message: err.message || 'Server error' });
+    res.status(err.status || 500).json({
+        message: err.message || 'Server error',
+    });
 });
 app.listen(process.env.PORT, () => {
     // eslint-disable-next-line no-console

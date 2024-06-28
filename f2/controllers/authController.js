@@ -1,21 +1,25 @@
 import { loginUser, signupUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
-export const signup = catchAsync(async (req, res) => {
-    const { user, token } = await signupUser(req.body);
+const authController = {
+    signup: catchAsync(async (req, res) => {
+        const { user, token } = await signupUser(req.body);
 
-    res.status(201).json({
-        msg: 'Success',
-        user,
-        token,
-    });
-});
+        res.status(201).json({
+            user: {
+                email: user.email,
+                role: user.role,
+            },
+            token,
+        });
+    }),
+    login: catchAsync(async (req, res) => {
+        const { user, token } = await loginUser(req.body);
 
-export const login = catchAsync(async (req, res) => {
-    const { user, token } = await loginUser(req.body);
-
-    res.status(200).json({
-        user,
-        token,
-    });
-});
+        res.status(200).json({
+            user,
+            token,
+        });
+    }),
+};
+export default authController;

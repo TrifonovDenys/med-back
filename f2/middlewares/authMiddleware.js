@@ -1,5 +1,5 @@
 import HttpError from '../helpers/HttpError.js';
-import { singupUserValidator, updateUserDataValidator } from '../schemas/userValidators.js';
+import { loginUserValidator, singupUserValidator, updateUserDataValidator } from '../schemas/userValidators.js';
 import { checkToken } from '../services/jwtServise.js';
 import { checkUserExist, getOneUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
@@ -10,6 +10,18 @@ export const checkSignupUserData = catchAsync(async (req, res, next) => {
         throw HttpError(400, 'Invalid user data..');
     }
     await checkUserExist({ email: value.email });
+    req.body = value;
+
+    next();
+});
+
+export const checkLoginUserData = catchAsync(async (req, res, next) => {
+    console.log(loginUserValidator(req.body));
+    const { error, value } = loginUserValidator(req.body);
+    console.log(value);
+    if (error) {
+        throw HttpError(400, 'Invalid login data..');
+    }
     req.body = value;
 
     next();
