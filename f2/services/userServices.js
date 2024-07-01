@@ -90,13 +90,15 @@ export const signupUser = async (userData) => {
 
 export const loginUser = async (userData) => {
     // поиск одного пользователя по email + достать 1 поле
-    const user = await User.findOne({ email: userData.email }).select('+password');
-
-    if (!user) throw HttpError(401, 'Not autorized');
+    const user = await User.findOne({ email: userData.email });
+    console.log(user.password);
+    if (!user) throw HttpError(401, 'Not registrated');
+    // throw HttpError(401, 'Not autorized');
 
     const passwordIsValid = await user.checkPassword(userData.password, user.password);
 
-    if (!passwordIsValid) throw HttpError(401, 'Not autorized');
+    if (!passwordIsValid) throw HttpError(401, 'Wrong password');
+    // throw HttpError(401, 'Not autorized');
 
     user.password = undefined;
 

@@ -7,7 +7,7 @@ import catchAsync from '../utils/catchAsync.js';
 export const checkSignupUserData = catchAsync(async (req, res, next) => {
     const { error, value } = singupUserValidator(req.body);
     if (error) {
-        throw HttpError(400, 'Invalid user data..');
+        throw HttpError(400, `${error.details[0].message}`);
     }
     await checkUserExist({ email: value.email });
     req.body = value;
@@ -16,11 +16,10 @@ export const checkSignupUserData = catchAsync(async (req, res, next) => {
 });
 
 export const checkLoginUserData = catchAsync(async (req, res, next) => {
-    console.log(loginUserValidator(req.body));
     const { error, value } = loginUserValidator(req.body);
-    console.log(value);
     if (error) {
-        throw HttpError(400, 'Invalid login data..');
+        console.log(error.details);
+        throw HttpError(400, `${error.details[0].message}`);
     }
     req.body = value;
 

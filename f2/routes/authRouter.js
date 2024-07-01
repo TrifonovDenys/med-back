@@ -1,6 +1,7 @@
 import express from 'express';
 
 import authController from '../controllers/authController.js';
+import validateBody from '../helpers/validateBody.js';
 import { checkLoginUserData, checkSignupUserData } from '../middlewares/authMiddleware.js';
 
 const authRouter = express.Router();
