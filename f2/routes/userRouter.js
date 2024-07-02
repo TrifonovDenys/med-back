@@ -1,6 +1,6 @@
 import express from 'express';
 
-import userController from '../controllers/userController.js';
+import userController from '../controllers/user/userController.js';
 import { allowFor, protect } from '../middlewares/authMiddleware.js';
 import { checkCreateUserData, checkUpdateUserData } from '../middlewares/userMiddleware.js';
 

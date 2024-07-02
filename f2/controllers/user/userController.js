@@ -1,5 +1,5 @@
-import { createUser, deleteUser, getAllUsers, getOneUser, updateUser } from '../services/userServices.js';
-import catchAsync from '../utils/catchAsync.js';
+import { createUser, deleteUser, getAllUsers, getOneUser, updateUser } from '../../services/userServices.js';
+import catchAsync from '../../utils/catchAsync.js';
 
 const userController = {
     getUsers: catchAsync(async (_, res) => {

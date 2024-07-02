@@ -1,5 +1,5 @@
-import { loginUser, signupUser } from '../services/userServices.js';
-import catchAsync from '../utils/catchAsync.js';
+import { loginUser, signupUser } from '../../services/userServices.js';
+import catchAsync from '../../utils/catchAsync.js';
 
 const authController = {
     signup: catchAsync(async (req, res) => {
