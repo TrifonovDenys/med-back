@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -31,6 +32,7 @@ mongoose
         process.exit(1);
     });
 
+app.use(cookieParser());
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
@@ -48,6 +50,7 @@ app.use((err, req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     res.status(err.status || 500).json({
         message: err.message || 'Server error',
+        text: err.stack,
     });
 });
 app.listen(process.env.PORT, () => {

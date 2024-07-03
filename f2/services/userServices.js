@@ -2,7 +2,6 @@ import { Types } from 'mongoose';
 
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
-import signToken from './jwtServise.js';
 
 /** Create user sservice
  * @param { Object } userData
@@ -83,15 +82,13 @@ export const signupUser = async (userData) => {
     // скидываем пароль чтобы не пошел дальше в res
     newUser.password = undefined;
 
-    //
-    const token = signToken(newUser.id);
-    return { user: newUser, token };
+    return newUser;
 };
 
 export const loginUser = async (userData) => {
     // поиск одного пользователя по email + достать 1 поле
-    const user = await User.findOne({ email: userData.email });
-    console.log(user.password);
+    const user = await User.findOne({ email: userData.email }).select('+password');
+
     if (!user) throw HttpError(401, 'Not registrated');
     // throw HttpError(401, 'Not autorized');
 
@@ -102,7 +99,5 @@ export const loginUser = async (userData) => {
 
     user.password = undefined;
 
-    const token = signToken(user.id);
-
-    return { user, token };
+    return user;
 };

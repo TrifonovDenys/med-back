@@ -23,13 +23,13 @@ export const createUserDataValidator = (data) =>
             email: Joi.string().regex(emailRegex).required().messages({
                 'string.base': `'email' should be a type of 'text'`,
                 'string.empty': `'email' cannot be an empty field`,
-                'string.pattern.base': `'email' has incorect pattern 'aa@aaaa'.`,
+                'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'any.required': `missing required 'email' field`,
             }),
             password: Joi.string().regex(passwordRegex).required().messages({
                 'string.base': `'password' should be a type of 'text'`,
                 'string.empty': `'password' cannot be an empty field`,
-                'string.pattern.base': `Password must contain at least: one uppercase English letter. (a-z), one lowercase English letter. Has minimum 8 characters in length.`,
+                'string.pattern.base': `Password must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
                 'any.required': `missing required 'password' field`,
             }),
             role: Joi.string().valid('user', 'admin', 'moderator').messages({
@@ -59,14 +59,14 @@ export const singupUserValidator = (data) =>
                 }),
             email: Joi.string().regex(emailRegex).required().messages({
                 'string.base': `'email' should be a type of 'text'`,
-                'string.pattern.base': `'email' has incorect pattern 'aa@aaaa'.`,
+                'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'string.empty': `'email' cannot be an empty field`,
                 'any.required': `missing required 'email' field`,
             }),
             password: Joi.string().regex(passwordRegex).required().messages({
                 'string.base': `'password' should be a type of 'text'`,
                 'string.empty': `'password' cannot be an empty field`,
-                'string.pattern.base': `Password must contain at least: one uppercase English letter. (a-z), one lowercase English letter. Has minimum 8 characters in length.`,
+                'string.pattern.base': `Password must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
                 'any.required': `missing required 'password' field`,
             }),
         })
@@ -78,14 +78,14 @@ export const loginUserValidator = (data) =>
         .keys({
             email: Joi.string().regex(emailRegex).required().messages({
                 'string.base': `email should be a type of 'text'`,
-                'string.pattern.base': `'email' has incorect pattern 'aa@aaaa'.`,
+                'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'string.empty': `email cannot be an empty field`,
                 'any.required': `missing required email field`,
             }),
             password: Joi.string().regex(passwordRegex).required().messages({
                 'string.base': `'password' should be a type of 'text'`,
                 'string.empty': `'password' cannot be an empty field`,
-                'string.pattern.base': `Password must contain at least: one uppercase English letter. (a-z), one lowercase English letter. Has minimum 8 characters in length.`,
+                'string.pattern.base': `Password must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
                 'any.required': `missing required 'password' field`,
             }),
         })
@@ -111,7 +111,7 @@ export const updateUserDataValidator = (data) =>
                 }),
             email: Joi.string().regex(emailRegex).required().messages({
                 'string.base': `'email' should be a type of 'text'`,
-                'string.pattern.base': `'email' has incorect pattern 'aa@aaaa'.`,
+                'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'string.empty': `'email' cannot be an empty field`,
                 'any.required': `missing required 'email' field`,
             }),
