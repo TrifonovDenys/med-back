@@ -36,12 +36,12 @@ const userController = {
         await deleteUser(req.params.id);
         res.status(204);
     }),
-    getMe: (req, res) => {
+    getMe: catchAsync(async (req, res) => {
         res.status(200).json({
             msg: 'Succsess',
             user: req.user,
         });
-    },
+    }),
     updateUserAvatar: catchAsync(async (req, res) => {}),
 };
 

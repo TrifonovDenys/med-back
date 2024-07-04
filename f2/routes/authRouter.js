@@ -1,7 +1,6 @@
 import express from 'express';
 
 import authController from '../controllers/user/authController.js';
-import validateBody from '../helpers/validateBody.js';
 import { checkLoginUserData, checkSignupUserData } from '../middlewares/authMiddleware.js';
 
 const authRouter = express.Router();
@@ -16,6 +15,7 @@ const authRouter = express.Router();
 authRouter.post('/signup', checkSignupUserData, authController.signup);
 authRouter.post('/login', checkLoginUserData, authController.login);
 authRouter.post('/logout', authController.logout);
+authRouter.post('/refresh_token', authController.refreshAccsessToken);
 // authRouter.post('/forgor-password')
 // authRouter.post('/restor-password/<one-time-password>')
 

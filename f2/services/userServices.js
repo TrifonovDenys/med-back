@@ -54,7 +54,7 @@ export const checkUserExistById = async (id) => {
     if (!idIsValid) {
         throw HttpError(400, 'Invalid user ID format'); // 400 for bad request
     }
-    const userExist = await User.find({ _id: id });
+    const userExist = await User.findById(id);
     if (!userExist) {
         throw HttpError(404, 'User not found');
     }

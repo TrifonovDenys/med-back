@@ -1,6 +1,6 @@
 import HttpError from '../helpers/HttpError.js';
 import { loginUserValidator, singupUserValidator, updateUserDataValidator } from '../schemas/userValidators.js';
-import { checkToken } from '../services/jwtServise.js';
+import jwtServise from '../services/jwtServise.js';
 import { checkUserExist, getOneUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -29,7 +29,7 @@ export const checkLoginUserData = catchAsync(async (req, res, next) => {
 export const protect = catchAsync(async (req, res, next) => {
     const token = req.headers.authorization?.startsWith('Bearer') && req.headers.authorization.split(' ')[1];
 
-    const userId = checkToken(token);
+    const userId = jwtServise.checkToken(token);
     const currentUser = await getOneUser(userId);
 
     if (!currentUser) throw HttpError(401, 'Not logged in ..');
@@ -43,6 +43,5 @@ export const allowFor =
     (...roles) =>
     (req, res, next) => {
         if (roles.includes(req.user.role)) return next();
-
         next(HttpError(403, 'You are not allowed to perform this action..'));
     };

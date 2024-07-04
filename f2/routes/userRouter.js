@@ -6,20 +6,14 @@ import { checkCreateUserData, checkUpdateUserData } from '../middlewares/userMid
 
 const userRouter = express.Router();
 
+// Analogy to CheckAuth
 userRouter.use(protect);
 
 userRouter.get('/get-me', userController.getMe);
 // userRouter.patch('/update-me', );
 // Router.patch('/update-my-password', )
+
 userRouter.use(allowFor('admin', 'moderator'));
-// userRouter.route('/').post(checkCreateUserData, userController.createUser).get(userController.getUsers);
-
-// userRouter
-//     .route('/:id')
-//     .get(userController.getUser)
-//     .patch(checkUpdateUserData, userController.updateUser)
-//     .delete(userController.deleteUser);
-
 userRouter.get('/', userController.getUsers);
 userRouter.get('/:id', userController.getUser);
 userRouter.post('/', checkCreateUserData, userController.createUser);

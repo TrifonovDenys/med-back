@@ -1,5 +1,5 @@
-import { generateAccessAndRefreshTokens, signAccsessToken, signRefreshToken } from '../../services/jwtServise.js';
-import { loginUser, signupUser } from '../../services/userServices.js';
+import jwtServise from '../../services/jwtServise.js';
+import { checkUserExistById, loginUser, signupUser } from '../../services/userServices.js';
 import catchAsync from '../../utils/catchAsync.js';
 
 const MAX_REFRESH_TOKEN_AGE = 30 * 24 * 60 * 60 * 1000;
@@ -7,8 +7,7 @@ const MAX_REFRESH_TOKEN_AGE = 30 * 24 * 60 * 60 * 1000;
 const authController = {
     signup: catchAsync(async (req, res) => {
         const user = await signupUser(req.body);
-        console.log(user);
-        const { accessToken, refreshToken } = generateAccessAndRefreshTokens(user.id);
+        const { accessToken, refreshToken } = await jwtServise.generateAccessAndRefreshTokens(user.id);
 
         res.status(201)
             .cookie('refreshtoken', refreshToken, {
@@ -26,9 +25,7 @@ const authController = {
     }),
     login: catchAsync(async (req, res) => {
         const user = await loginUser(req.body);
-        console.log(user);
-        const { accessToken, refreshToken } = generateAccessAndRefreshTokens(user.id);
-        console.log(accessToken, refreshToken);
+        const { accessToken, refreshToken } = await jwtServise.generateAccessAndRefreshTokens(user.id);
 
         res.status(200)
             .cookie('refreshtoken', refreshToken, {
@@ -41,6 +38,22 @@ const authController = {
                 accessToken,
             });
     }),
-    logout: catchAsync(async (req, res) => {}),
+    logout: catchAsync(async (_, res) => {
+        res.status(200).clearCookie('refreshtoken').json({ user: {}, message: 'Logged out successfully' });
+    }),
+    refreshAccsessToken: catchAsync(async (req, res) => {
+        const cookieRefreshToken = req.cookies.refreshtoken;
+        const userId = jwtServise.checkToken(cookieRefreshToken);
+        const user = await checkUserExistById(userId);
+        const { accessToken, refreshToken } = await jwtServise.generateAccessAndRefreshTokens(user._id);
+
+        res.cookie('refreshtoken', refreshToken, {
+            maxAge: MAX_REFRESH_TOKEN_AGE,
+            httpOnly: true,
+            secure: true,
+        });
+
+        res.status(200).json({ accessToken, message: 'Access token refreshed' });
+    }),
 };
 export default authController;
