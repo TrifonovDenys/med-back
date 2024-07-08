@@ -10,7 +10,7 @@ const userRouter = express.Router();
 userRouter.use(protect);
 
 userRouter.get('/get-me', userController.getMe);
-// userRouter.patch('/update-me', );
+userRouter.patch('/update-me', userController.updateUser);
 // Router.patch('/update-my-password', )
 
 userRouter.use(allowFor('admin', 'moderator'));

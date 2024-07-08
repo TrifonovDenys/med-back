@@ -23,6 +23,10 @@ const user = mongoose.Schema(
             enum: ['user', 'admin', 'moderator'],
             default: 'user',
         },
+        avatarUrl: {
+            type: String,
+            required: false,
+        },
     },
     {
         timestamps: true,

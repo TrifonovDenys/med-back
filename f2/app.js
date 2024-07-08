@@ -5,10 +5,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 
-import authRouter from './routes/authRouter.js';
-import contactsRouter from './routes/contactsRouter.js';
-import todoRouter from './routes/todoRouter.js';
-import userRouter from './routes/userRouter.js';
+import router from './routers.js';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'productions' ? './env/.env.prod' : './env/.env.dev',
@@ -36,11 +33,8 @@ app.use(cookieParser());
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
-
-app.use('/api/auth', authRouter);
-app.use('/api/contacts', contactsRouter);
-app.use('/api/users', userRouter);
-app.use('/api/todos', todoRouter);
+app.use('/api', router);
+app.use('/upload', express.static('upload'));
 
 app.use((_, res) => {
     res.status(404).json({ message: 'Route not found' });

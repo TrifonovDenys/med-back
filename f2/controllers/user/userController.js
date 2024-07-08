@@ -42,7 +42,14 @@ const userController = {
             user: req.user,
         });
     }),
-    updateUserAvatar: catchAsync(async (req, res) => {}),
+    updateUserAvatar: catchAsync(async (req, res) => {
+        console.log(req.body);
+        await updateUserAvatar(req.body.avatar);
+        res.status(200).json({
+            msg: 'Succsess',
+            updatedUser: req.user,
+        });
+    }),
 };
 
 export default userController;

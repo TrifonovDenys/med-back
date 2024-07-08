@@ -49,6 +49,19 @@ export const updateUser = async (id, userData) => {
  */
 export const deleteUser = (id) => User.findbyIdAndDelete(id);
 
+/** Update user data service
+ * @param { string } id
+ * @param { Object } userData
+ * @returns {Promise<User>}
+ * @category services
+ */
+
+export const updateUserAvatar = async (id, avatar) => {
+    const user = await User.findOneAndUpdate({ _id: id }, { avatar });
+    user.avatar = avatar;
+    return user;
+};
+
 export const checkUserExistById = async (id) => {
     const idIsValid = Types.ObjectId.isValid(id);
     if (!idIsValid) {
