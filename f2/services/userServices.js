@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
+import jwtServise from './jwtServise.js';
 
 /** Create user sservice
  * @param { Object } userData
@@ -42,14 +43,23 @@ export const updateUser = async (id, userData) => {
     return updatedUser;
 };
 
-/** Get one user service
+/** Update logged in user data service
  * @param { string } id
+ * @param { Object } userData
  * @returns {Promise<User>}
  * @category services
  */
-export const deleteUser = (id) => User.findbyIdAndDelete(id);
+export const updateMe = async (userData, user, file) => {
+    console.log(user);
+    // const user = await User.findById(id);
+    Object.keys(userData).forEach((key) => {
+        user[key] = userData[key];
+    });
+    const updatedUser = await user.save();
+    return updatedUser;
+};
 
-/** Update user data service
+/** Update user avatar service
  * @param { string } id
  * @param { Object } userData
  * @returns {Promise<User>}
@@ -61,6 +71,13 @@ export const updateUserAvatar = async (id, avatar) => {
     user.avatar = avatar;
     return user;
 };
+
+/** Get one user service
+ * @param { string } id
+ * @returns {Promise<User>}
+ * @category services
+ */
+export const deleteUser = (id) => User.findbyIdAndDelete(id);
 
 export const checkUserExistById = async (id) => {
     const idIsValid = Types.ObjectId.isValid(id);

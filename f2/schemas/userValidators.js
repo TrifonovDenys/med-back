@@ -95,7 +95,7 @@ export const updateUserDataValidator = (data) =>
     Joi.object()
         .options({ abortEarly: false })
         .keys({
-            name: Joi.string().min(3).max(12).required().messages({
+            name: Joi.string().min(3).max(12).messages({
                 'string.base': `'name' should be a type of 'text'`,
                 'string.min': `'name' should be at lest 3 symbols`,
                 'string.max': `'name' should be less then 12 symbols`,
@@ -109,7 +109,7 @@ export const updateUserDataValidator = (data) =>
                     'number.min': `min 'year' '1920'`,
                     'number.max': `max 'year' ${new Date().getFullYear()}`,
                 }),
-            email: Joi.string().regex(emailRegex).required().messages({
+            email: Joi.string().regex(emailRegex).messages({
                 'string.base': `'email' should be a type of 'text'`,
                 'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'string.empty': `'email' cannot be an empty field`,
@@ -118,6 +118,33 @@ export const updateUserDataValidator = (data) =>
             role: Joi.string().valid('user', 'admin', 'moderator').messages({
                 'string.base': `'role' should be a type of 'text'`,
                 'string.empty': `'role' cannot be an empty field`,
+            }),
+        })
+        .validate(data);
+
+export const updateMyDataValidator = (data) =>
+    Joi.object()
+        .options({ abortEarly: false })
+        .keys({
+            name: Joi.string().min(3).max(12).messages({
+                'string.base': `'name' should be a type of 'text'`,
+                'string.min': `'name' should be at lest 3 symbols`,
+                'string.max': `'name' should be less then 12 symbols`,
+                'string.empty': `'name' cannot be an empty field`,
+                'any.required': `missing required 'name' field`,
+            }),
+            year: Joi.number()
+                .min(1920)
+                .max(new Date().getFullYear())
+                .messages({
+                    'number.min': `min 'year' '1920'`,
+                    'number.max': `max 'year' ${new Date().getFullYear()}`,
+                }),
+            email: Joi.string().regex(emailRegex).messages({
+                'string.base': `'email' should be a type of 'text'`,
+                'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
+                'string.empty': `'email' cannot be an empty field`,
+                'any.required': `missing required 'email' field`,
             }),
         })
         .validate(data);
