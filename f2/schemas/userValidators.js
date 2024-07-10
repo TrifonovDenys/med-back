@@ -131,7 +131,6 @@ export const updateMyDataValidator = (data) =>
                 'string.min': `'name' should be at lest 3 symbols`,
                 'string.max': `'name' should be less then 12 symbols`,
                 'string.empty': `'name' cannot be an empty field`,
-                'any.required': `missing required 'name' field`,
             }),
             year: Joi.number()
                 .min(1920)
@@ -144,7 +143,7 @@ export const updateMyDataValidator = (data) =>
                 'string.base': `'email' should be a type of 'text'`,
                 'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'string.empty': `'email' cannot be an empty field`,
-                'any.required': `missing required 'email' field`,
             }),
+            avatar: Joi.string(),
         })
         .validate(data);

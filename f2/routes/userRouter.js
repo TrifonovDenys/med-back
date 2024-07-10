@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 import multer from 'multer';
 
 import userController from '../controllers/user/userController.js';

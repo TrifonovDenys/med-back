@@ -51,8 +51,7 @@ export const updateUser = async (id, userData) => {
  */
 export const updateMe = async (userData, user, file) => {
     console.log(user);
-    // const user = await User.findById(id);
-    Object.keys(userData).forEach((key) => {
+    user.avatar = Object.keys(userData).forEach((key) => {
         user[key] = userData[key];
     });
     const updatedUser = await user.save();
