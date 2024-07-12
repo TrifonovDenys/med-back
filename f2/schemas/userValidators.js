@@ -144,6 +144,6 @@ export const updateMyDataValidator = (data) =>
                 'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
                 'string.empty': `'email' cannot be an empty field`,
             }),
-            avatar: Joi.string(),
+            avatarUrl: Joi.string(),
         })
         .validate(data);

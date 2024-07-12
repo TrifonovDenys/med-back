@@ -2,6 +2,8 @@ import { Types } from 'mongoose';
 
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
+import catchAsync from '../utils/catchAsync.js';
+import ImageService from './imgService.js';
 import jwtServise from './jwtServise.js';
 
 /** Create user sservice
@@ -34,14 +36,14 @@ export const getOneUser = (id) => User.findById(id);
  * @returns {Promise<User>}
  * @category services
  */
-export const updateUser = async (id, userData) => {
+export const updateUser = catchAsync(async (id, userData) => {
     const user = await User.findById(id);
     Object.keys(userData).forEach((key) => {
         user[key] = userData[key];
     });
     const updatedUser = await user.save();
     return updatedUser;
-};
+});
 
 /** Update logged in user data service
  * @param { string } id
@@ -50,10 +52,14 @@ export const updateUser = async (id, userData) => {
  * @category services
  */
 export const updateMe = async (userData, user, file) => {
-    console.log(user);
-    user.avatar = Object.keys(userData).forEach((key) => {
+    // console.log(file);
+    if (file) {
+        user.avatarUrl = await ImageService.save(file, {}, 'images', 'users', user.id);
+    }
+    Object.keys(userData).forEach((key) => {
         user[key] = userData[key];
     });
+    // console.log(user);
     const updatedUser = await user.save();
     return updatedUser;
 };
@@ -67,7 +73,7 @@ export const updateMe = async (userData, user, file) => {
 
 export const updateUserAvatar = async (id, avatar) => {
     const user = await User.findOneAndUpdate({ _id: id }, { avatar });
-    user.avatar = avatar;
+    user.avatarUrl = avatarUrl;
     return user;
 };
 

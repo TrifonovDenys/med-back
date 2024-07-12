@@ -33,7 +33,7 @@ const userController = {
         });
     }),
     updateMe: catchAsync(async (req, res) => {
-        const updatedUser = await updateMe(req.body, req.user, file);
+        const updatedUser = await updateMe(req.body, req.user, req.file);
         res.status(200).json({
             msg: 'Succsess',
             user: updatedUser,

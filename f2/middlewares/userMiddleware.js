@@ -1,7 +1,6 @@
-import multer from 'multer';
-
 import HttpError from '../helpers/HttpError.js';
 import { singupUserValidator, updateMyDataValidator, updateUserDataValidator } from '../schemas/userValidators.js';
+import ImageService from '../services/imgService.js';
 import { checkUserExist, checkUserExistById } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -45,3 +44,5 @@ export const checkUpdateMyData = catchAsync(async (req, res, next) => {
 
     next();
 });
+
+export const uploadUserAvatar = ImageService.initUploadMiddleware('avatarUrl');
