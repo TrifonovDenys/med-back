@@ -1,7 +1,12 @@
 import HttpError from '../helpers/HttpError.js';
-import { singupUserValidator, updateMyDataValidator, updateUserDataValidator } from '../schemas/userValidators.js';
+import {
+    singupUserValidator,
+    updateMyDataValidator,
+    updateMyPasswordValidator,
+    updateUserDataValidator,
+} from '../schemas/userValidators.js';
 import ImageService from '../services/imgService.js';
-import { checkUserExist, checkUserExistById } from '../services/userServices.js';
+import { checkUserExist, checkUserExistById, checkUserPassword } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
 export const checkUserId = catchAsync(async (req, res, next) => {
@@ -41,6 +46,19 @@ export const checkUpdateMyData = catchAsync(async (req, res, next) => {
     }
     await checkUserExist({ email: value.email, _id: { $ne: req.paramsid } });
     req.body = value;
+
+    next();
+});
+
+export const checkMyPassword = catchAsync(async (req, res, next) => {
+    const { currentPassword, newPassword, checkNewPassword } = req.body;
+    if (newPassword !== checkNewPassword) throw HttpError(400, `New passwords do not match`);
+    const { error, value } = updateMyPasswordValidator(req.body);
+    if (error) {
+        throw HttpError(400, 'Invalid user data..');
+    }
+
+    await checkUserPassword(req.user.id, currentPassword, newPassword);
 
     next();
 });

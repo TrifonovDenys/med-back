@@ -4,7 +4,6 @@ import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import ImageService from './imgService.js';
-import jwtServise from './jwtServise.js';
 
 /** Create user sservice
  * @param { Object } userData
@@ -96,7 +95,9 @@ export const checkUserExistById = async (id) => {
     return userExist;
 };
 
-export const checkUserExistByEmail = (email) => {};
+export const checkUserExistByEmail = async (userEmail) => {
+    const user = await User.findOne({ email: userEmail });
+};
 
 export const checkUserExist = async (filter) => {
     const userExists = await User.exists(filter);
@@ -136,3 +137,13 @@ export const loginUser = async (userData) => {
 
     return user;
 };
+
+export const checkUserPassword = async (userId, currentPassword, newPassword) => {
+    const user = await User.findById(userId).select('+password');
+    if (!(await user.checkPassword(currentPassword, user.password))) throw HttpError(401, `Current password is wrong`);
+
+    user.password = newPassword;
+    await user.save();
+};
+
+export const forgotPassword = async (userEmail) => {};

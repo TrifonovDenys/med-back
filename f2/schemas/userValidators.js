@@ -147,3 +147,40 @@ export const updateMyDataValidator = (data) =>
             avatarUrl: Joi.string(),
         })
         .validate(data);
+
+export const updateMyPasswordValidator = (data) =>
+    Joi.object()
+        .options({ abortEarly: false })
+        .keys({
+            currentPassword: Joi.string().regex(passwordRegex).required().messages({
+                'string.base': `'password' should be a type of 'text'`,
+                'string.empty': `'password' cannot be an empty field`,
+                'string.pattern.base': `Password must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
+                'any.required': `missing required 'password' field`,
+            }),
+            newPassword: Joi.string().regex(passwordRegex).required().messages({
+                'string.base': `'newPassword' should be a type of 'text'`,
+                'string.empty': `'newPassword' cannot be an empty field`,
+                'string.pattern.base': `newPassword must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
+                'any.required': `missing required 'newPassword' field`,
+            }),
+            checkNewPassword: Joi.string().regex(passwordRegex).required().messages({
+                'string.base': `'checkNewPassword' should be a type of 'text'`,
+                'string.empty': `'checkNewPassword' cannot be an empty field`,
+                'string.pattern.base': `checkNewPassword must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
+                'any.required': `missing required 'checkNewPassword' field`,
+            }),
+        })
+        .validate(data);
+
+export const forgotPasswordValidator = (data) =>
+    Joi.object()
+        .options({ abortEarly: false })
+        .keys({
+            email: Joi.string().regex(emailRegex).messages({
+                'string.base': `'email' should be a type of 'text'`,
+                'string.pattern.base': `'email' has incorect pattern 'aa@a.aa'.`,
+                'string.empty': `'email' cannot be an empty field`,
+            }),
+        })
+        .validate(data);

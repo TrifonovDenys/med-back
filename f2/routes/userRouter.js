@@ -4,7 +4,13 @@ import multer from 'multer';
 
 import userController from '../controllers/user/userController.js';
 import { allowFor, protect } from '../middlewares/authMiddleware.js';
-import { checkCreateUserData, checkUpdateMyData, checkUpdateUserData, uploadUserAvatar } from '../middlewares/userMiddleware.js';
+import {
+    checkCreateUserData,
+    checkMyPassword,
+    checkUpdateMyData,
+    checkUpdateUserData,
+    uploadUserAvatar,
+} from '../middlewares/userMiddleware.js';
 
 const userRouter = express.Router();
 
@@ -14,7 +20,7 @@ userRouter.use(protect);
 userRouter.get('/get-me', userController.getMe);
 userRouter.patch('/update-me', uploadUserAvatar, checkUpdateMyData, userController.updateMe);
 userRouter.patch('/avatar/:id', uploadUserAvatar, userController.updateUserAvatar);
-// Router.patch('/update-my-password', )
+userRouter.patch('/update-my-password', checkMyPassword, userController.updateMyPassword);
 
 userRouter.use(allowFor('admin', 'moderator'));
 userRouter.get('/', userController.getUsers);

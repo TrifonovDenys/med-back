@@ -1,5 +1,5 @@
 import jwtServise from '../../services/jwtServise.js';
-import { checkUserExistById, loginUser, signupUser } from '../../services/userServices.js';
+import { checkUserExistById, forgotPassword, loginUser, signupUser } from '../../services/userServices.js';
 import catchAsync from '../../utils/catchAsync.js';
 
 const MAX_REFRESH_TOKEN_AGE = 30 * 24 * 60 * 60 * 1000;
@@ -55,5 +55,11 @@ const authController = {
 
         res.status(200).json({ accessToken, message: 'Access token refreshed' });
     }),
+    forgotPassword: catchAsync(async (req, res) => {
+        res.status(200).json({
+            msg: 'Succsess',
+        });
+    }),
+    restorPassword: catchAsync(async (req, res) => {}),
 };
 export default authController;

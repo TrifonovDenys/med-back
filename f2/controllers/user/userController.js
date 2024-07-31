@@ -56,6 +56,12 @@ const userController = {
             user: req.user,
         });
     }),
+    updateMyPassword: (req, res) => {
+        res.status(200).json({
+            msg: 'Succsess',
+            user: req.user,
+        });
+    },
 };
 
 export default userController;
