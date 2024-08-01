@@ -17,7 +17,7 @@ const signRefreshToken = (payload) =>
         expiresIn: process.env.AuthRefreshTokenExpiry,
     });
 
-const jwtServise = {
+const jwtService = {
     generateAccessAndRefreshTokens: async (userId) => {
         const accessToken = signAccsessToken(userId);
         const refreshToken = signRefreshToken(userId);
@@ -40,4 +40,4 @@ const jwtServise = {
     },
 };
 
-export default jwtServise;
+export default jwtService;

@@ -184,3 +184,16 @@ export const forgotPasswordValidator = (data) =>
             }),
         })
         .validate(data);
+
+export const restorePasswordValidator = (data) =>
+    Joi.object()
+        .options({ abortEarly: false })
+        .keys({
+            password: Joi.string().regex(passwordRegex).required().messages({
+                'string.base': `'password' should be a type of 'text'`,
+                'string.empty': `'password' cannot be an empty field`,
+                'string.pattern.base': `Password must contain at least: one digit, one lowercase English letter (a-z). Has minimum 8 characters in length.`,
+                'any.required': `missing required 'password' field`,
+            }),
+        })
+        .validate(data);

@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { Types } from 'mongoose';
 
 import HttpError from '../helpers/HttpError.js';
@@ -105,6 +106,8 @@ export const checkUserExist = async (filter) => {
     if (userExists) throw HttpError(409, 'User exists..');
 };
 
+export const getUserByEmail = async (email) => await User.findOne({ email });
+
 export const signupUser = async (userData) => {
     // скидываем права нового пльзоватля до user
     const newUserData = {
@@ -146,4 +149,18 @@ export const checkUserPassword = async (userId, currentPassword, newPassword) =>
     await user.save();
 };
 
-export const forgotPassword = async (userEmail) => {};
+export const resetPassword = async (otp, newPassword) => {
+    const hashedOtp = crypto.createHash('sha256').update(otp).digest('hex');
+
+    const user = await User.findOne({
+        passwordResetToken: hashedOtp,
+        passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user) throw HttpError(400, 'Token is not valid');
+
+    user.password = newPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+};

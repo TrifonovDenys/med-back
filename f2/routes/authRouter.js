@@ -1,7 +1,12 @@
 import express from 'express';
 
 import authController from '../controllers/user/authController.js';
-import { checkLoginUserData, checkSignupUserData, checkforgotPasswordUserData } from '../middlewares/authMiddleware.js';
+import {
+    checkForgotPasswordUserData,
+    checkLoginUserData,
+    checkRestorePasswordUserData,
+    checkSignupUserData,
+} from '../middlewares/authMiddleware.js';
 
 const authRouter = express.Router();
 
@@ -16,7 +21,7 @@ authRouter.post('/signup', checkSignupUserData, authController.signup);
 authRouter.post('/login', checkLoginUserData, authController.login);
 authRouter.post('/logout', authController.logout);
 authRouter.post('/refresh_token', authController.refreshAccsessToken);
-authRouter.post('/forgor-password', checkforgotPasswordUserData, authController.forgotPassword);
-authRouter.post('/restor-password/:otp', authController.restorPassword);
+authRouter.post('/forgor-password', checkForgotPasswordUserData, authController.forgotPassword);
+authRouter.patch('/restore-password/:otp', checkRestorePasswordUserData, authController.restorePassword);
 
 export default authRouter;

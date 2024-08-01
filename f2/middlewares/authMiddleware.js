@@ -1,6 +1,6 @@
 import HttpError from '../helpers/HttpError.js';
-import { forgotPasswordValidator, loginUserValidator, singupUserValidator } from '../schemas/userValidators.js';
-import jwtServise from '../services/jwtServise.js';
+import { forgotPasswordValidator, loginUserValidator, restorePasswordValidator, singupUserValidator } from '../schemas/userValidators.js';
+import jwtService from '../services/jwtService.js';
 import { checkUserExist, getOneUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -28,7 +28,7 @@ export const checkLoginUserData = catchAsync(async (req, res, next) => {
 export const protect = catchAsync(async (req, res, next) => {
     const token = req.headers.authorization?.startsWith('Bearer') && req.headers.authorization.split(' ')[1];
 
-    const userId = jwtServise.checkToken(token);
+    const userId = jwtService.checkToken(token);
     const currentUser = await getOneUser(userId);
 
     if (!currentUser) throw HttpError(401, 'Not logged in ..');
@@ -45,12 +45,22 @@ export const allowFor =
         next(HttpError(403, 'You are not allowed to perform this action..'));
     };
 
-export const checkforgotPasswordUserData = catchAsync(async (req, res, next) => {
-    console.log(req.body.email);
+export const checkForgotPasswordUserData = catchAsync(async (req, res, next) => {
     const { error, value } = forgotPasswordValidator(req.body);
     if (error) {
-        throw HttpError(400, ``);
+        throw HttpError(400, `${error.details[0].message}`);
     }
+    req.body = value;
+
+    next();
+});
+
+export const checkRestorePasswordUserData = catchAsync(async (req, res, next) => {
+    const { error, value } = restorePasswordValidator(req.body);
+    if (error) {
+        throw HttpError(400, `${error.details[0].message}`);
+    }
+
     req.body = value;
 
     next();

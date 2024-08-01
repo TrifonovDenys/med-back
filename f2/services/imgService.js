@@ -39,3 +39,6 @@ class ImageService {
 }
 
 export default ImageService;
+
+// const avatar = await jimp.read(file.buffer)
+// await avatar.cover(option.width ||500, option.height ||500).quality(90).writeAsync(apth.join(fullFilePath, fileName))
