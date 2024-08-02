@@ -52,7 +52,7 @@ export const checkUpdateMyData = catchAsync(async (req, res, next) => {
 
 export const checkMyPassword = catchAsync(async (req, res, next) => {
     const { currentPassword, newPassword, checkNewPassword } = req.body;
-    if (newPassword !== checkNewPassword) throw HttpError(400, `New passwords do not match`);
+    if (newPassword !== checkNewPassword) throw HttpError(400, 'New passwords do not match');
     const { error, value } = updateMyPasswordValidator(req.body);
     if (error) {
         throw HttpError(400, 'Invalid user data..');

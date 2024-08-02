@@ -85,7 +85,6 @@ const authController = {
 
             await new Email(user, resetUrl).sendRestorePassword();
         } catch (err) {
-            console.log(err);
             user.passwordResetToken = undefined;
             user.passwordResetExpires = undefined;
 

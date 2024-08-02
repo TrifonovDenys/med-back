@@ -1,7 +1,6 @@
 import { compare, genSalt, hash } from 'bcrypt';
 import crypto from 'crypto';
 import mongoose from 'mongoose';
-import { type } from 'os';
 
 const user = mongoose.Schema(
     {
@@ -48,7 +47,7 @@ const user = mongoose.Schema(
 );
 
 // pre save mongoose hook
-user.pre('save', async function (next) {
+user.pre('save', async function hashPassword(next) {
     if (!this.isModified('password')) return next();
     const salt = await genSalt(10);
     this.password = await hash(this.password, salt);
@@ -62,7 +61,7 @@ user.pre('save', async function (next) {
  * @returns {Promise<boolean}
  */
 user.methods.checkPassword = (candidate, passwordHash) => compare(candidate, passwordHash);
-user.methods.createPasswordResetToken = function () {
+user.methods.createPasswordResetToken = function createPasswordResetToken() {
     const resetToken = crypto.randomBytes(32).toString('hex');
 
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');

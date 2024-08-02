@@ -12,7 +12,7 @@ class Email {
         this.from = process.env.EMAIL_FROM;
     }
 
-    #initTransport() {
+    static #initTransport() {
         if (process.env.NODE_ENV === 'production') {
             // use MAILGUN ...
             return nodemailer.createTransport({
@@ -50,7 +50,7 @@ class Email {
             text: convert(html),
         };
 
-        await this.#initTransport().sendMail(emailConfig);
+        await Email.#initTransport().sendMail(emailConfig);
     }
 
     async sendHello() {

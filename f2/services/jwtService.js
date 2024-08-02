@@ -30,10 +30,8 @@ const jwtService = {
             return payload;
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
-                console.error('JWT Error: Token expired');
                 throw HttpError(401, 'Token expired');
             } else {
-                console.error('JWT Error:', error.message);
                 throw HttpError(401, 'Invalid token');
             }
         }

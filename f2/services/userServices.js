@@ -4,7 +4,6 @@ import { Types } from 'mongoose';
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
 import catchAsync from '../utils/catchAsync.js';
-import Email from './emailService.js';
 import ImageService from './imgService.js';
 
 /** Create user sservice
@@ -53,12 +52,16 @@ export const updateUser = catchAsync(async (id, userData) => {
  * @category services
  */
 export const updateMe = async (userData, user, file) => {
+    const updatedUserData = { ...user };
     if (file) {
-        user.avatarUrl = await ImageService.save(file, {}, 'images', 'users', user.id);
+        updatedUserData.avatarUrl = await ImageService.save(file, {}, 'images', 'users', user.id);
     }
+
     Object.keys(userData).forEach((key) => {
-        user[key] = userData[key];
+        updatedUserData[key] = userData[key];
     });
+
+    Object.assign(user, updatedUserData);
     const updatedUser = await user.save();
     return updatedUser;
 };
@@ -72,7 +75,7 @@ export const updateMe = async (userData, user, file) => {
 
 export const updateUserAvatar = async (id, avatar) => {
     const user = await User.findOneAndUpdate({ _id: id }, { avatar });
-    user.avatarUrl = avatarUrl;
+    user.avatarUrl = avatar;
     return user;
 };
 
@@ -105,7 +108,9 @@ export const checkUserExist = async (filter) => {
     if (userExists) throw HttpError(409, 'User exists..');
 };
 
-export const getUserByEmail = async (email) => await User.findOne({ email });
+export const getUserByEmail = async (email) => {
+    await User.findOne({ email });
+};
 
 export const signupUser = async (userData) => {
     // скидываем права нового пльзоватля до user
@@ -119,7 +124,6 @@ export const signupUser = async (userData) => {
 
     // скидываем пароль чтобы не пошел дальше в res
     newUser.password = undefined;
-    ``;
     return newUser;
 };
 
@@ -152,7 +156,7 @@ export const loginUser = async (userData) => {
 
 export const checkUserPassword = async (userId, currentPassword, newPassword) => {
     const user = await User.findById(userId).select('+password');
-    if (!(await user.checkPassword(currentPassword, user.password))) throw HttpError(401, `Current password is wrong`);
+    if (!(await user.checkPassword(currentPassword, user.password))) throw HttpError(401, 'Current password is wrong');
 
     user.password = newPassword;
     await user.save();
