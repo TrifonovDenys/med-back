@@ -1,4 +1,14 @@
-import { createUser, deleteUser, getAllUsers, getOneUser, updateMe, updateUser, updateUserAvatar } from '../../services/userServices.js';
+import Email from '../../services/emailService.js';
+import {
+    createUser,
+    deleteUser,
+    getAllUsers,
+    getOneUser,
+    resendVerifyEmailService,
+    updateMe,
+    updateUser,
+    updateUserAvatar,
+} from '../../services/userServices.js';
 import catchAsync from '../../utils/catchAsync.js';
 
 const userController = {
@@ -62,6 +72,16 @@ const userController = {
             user: req.user,
         });
     },
+    resendVerifyEmail: catchAsync(async (req, res) => {
+        resendVerifyEmailService(req.user);
+
+        const verificatUrl = `${req.protocol}://${req.get('host')}/api/auth/verify/${req.user.verificationToken}`;
+        await new Email(req.user, verificatUrl).sendVerification();
+
+        res.status(200).json({
+            msg: 'Verification email send',
+        });
+    }),
 };
 
 export default userController;

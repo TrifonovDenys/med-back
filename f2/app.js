@@ -28,7 +28,6 @@ mongoose
         console.log(err.message);
         process.exit(1);
     });
-
 app.use(cookieParser());
 app.use(morgan('tiny'));
 app.use(cors());

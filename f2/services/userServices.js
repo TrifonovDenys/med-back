@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import HttpError from '../helpers/HttpError.js';
 import User from '../models/userModel.js';
 import catchAsync from '../utils/catchAsync.js';
+import Email from './emailService.js';
 import ImageService from './imgService.js';
 
 /** Create user sservice
@@ -52,14 +53,12 @@ export const updateUser = catchAsync(async (id, userData) => {
  * @category services
  */
 export const updateMe = async (userData, user, file) => {
-    // console.log(file);
     if (file) {
         user.avatarUrl = await ImageService.save(file, {}, 'images', 'users', user.id);
     }
     Object.keys(userData).forEach((key) => {
         user[key] = userData[key];
     });
-    // console.log(user);
     const updatedUser = await user.save();
     return updatedUser;
 };
@@ -120,8 +119,18 @@ export const signupUser = async (userData) => {
 
     // скидываем пароль чтобы не пошел дальше в res
     newUser.password = undefined;
-
+    ``;
     return newUser;
+};
+
+export const verifyUser = async (verificationToken) => {
+    const user = await User.findOne({ verificationToken });
+    if (!user) throw HttpError(401, 'Not registrated');
+    await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: '' });
+};
+
+export const resendVerifyEmailService = (user) => {
+    if (user.verify) throw HttpError(400, 'Verification has already been passed');
 };
 
 export const loginUser = async (userData) => {

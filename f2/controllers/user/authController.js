@@ -1,5 +1,6 @@
+import Email from '../../services/emailService.js';
 import jwtService from '../../services/jwtService.js';
-import { checkUserExistById, getUserByEmail, loginUser, resetPassword, signupUser } from '../../services/userServices.js';
+import { checkUserExistById, getUserByEmail, loginUser, resetPassword, signupUser, verifyUser } from '../../services/userServices.js';
 import catchAsync from '../../utils/catchAsync.js';
 
 const MAX_REFRESH_TOKEN_AGE = 30 * 24 * 60 * 60 * 1000;
@@ -8,6 +9,13 @@ const authController = {
     signup: catchAsync(async (req, res) => {
         const user = await signupUser(req.body);
         const { accessToken, refreshToken } = await jwtService.generateAccessAndRefreshTokens(user.id);
+
+        // try {
+        const verificationUrl = `${req.protocol}://${req.get('host')}/api/auth/verify/${user.verificationToken}`;
+        await new Email(user, verificationUrl).sendHello();
+        // } catch (err) {
+        //     console.log(err);
+        // }
 
         res.status(201)
             .cookie('refreshtoken', refreshToken, {
@@ -22,6 +30,12 @@ const authController = {
                 },
                 accessToken,
             });
+    }),
+    verifyEmail: catchAsync(async (req, res) => {
+        await verifyUser(req.params.verificationToken);
+        res.json({
+            msg: 'Verification successful',
+        });
     }),
     login: catchAsync(async (req, res) => {
         const user = await loginUser(req.body);
@@ -64,8 +78,20 @@ const authController = {
         }
         const otp = await user.createPasswordResetToken();
         await user.save();
+
+        try {
+            // temp back url
+            const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/restore-password/${otp}`;
+
+            await new Email(user, resetUrl).sendRestorePassword();
+        } catch (err) {
+            console.log(err);
+            user.passwordResetToken = undefined;
+            user.passwordResetExpires = undefined;
+
+            await user.save();
+        }
         // send otp
-        console.log('hash', otp);
         res.status(200).json({
             msg: 'Password reset instruction sent via email',
         });

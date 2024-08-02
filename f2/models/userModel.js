@@ -1,6 +1,7 @@
 import { compare, genSalt, hash } from 'bcrypt';
 import crypto from 'crypto';
 import mongoose from 'mongoose';
+import { type } from 'os';
 
 const user = mongoose.Schema(
     {
@@ -12,6 +13,14 @@ const user = mongoose.Schema(
             type: String,
             required: [true, 'Email is required'],
             unique: true,
+        },
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+            default: crypto.randomBytes(32).toString('hex'),
         },
         password: {
             type: String,
@@ -55,11 +64,10 @@ user.pre('save', async function (next) {
 user.methods.checkPassword = (candidate, passwordHash) => compare(candidate, passwordHash);
 user.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString('hex');
-    console.log('raw', resetToken);
 
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
-    return this.passwordResetToken;
+    return resetToken;
 };
 export default mongoose.model('User', user);

@@ -18,7 +18,6 @@ export const checkSignupUserData = catchAsync(async (req, res, next) => {
 export const checkLoginUserData = catchAsync(async (req, res, next) => {
     const { error, value } = loginUserValidator(req.body);
     if (error) {
-        console.log(error.details);
         throw HttpError(400, `${error.details[0].message}`);
     }
     req.body = value;

@@ -21,6 +21,7 @@ userRouter.get('/get-me', userController.getMe);
 userRouter.patch('/update-me', uploadUserAvatar, checkUpdateMyData, userController.updateMe);
 userRouter.patch('/avatar/:id', uploadUserAvatar, userController.updateUserAvatar);
 userRouter.patch('/update-my-password', checkMyPassword, userController.updateMyPassword);
+userRouter.post('/verify', userController.resendVerifyEmail);
 
 userRouter.use(allowFor('admin', 'moderator'));
 userRouter.get('/', userController.getUsers);

@@ -1,14 +1,9 @@
 import fs from 'fs/promises';
-import path from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 
-// import User from '../models/userModel';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const contactsPath = path.join(__dirname, '..', 'db', 'contacts.json');
-// console.log(fileURLToPath(import.meta.url));
+const contactsPath = join(dirname(fileURLToPath(import.meta.url)), '..', 'db', 'contacts.json');
 
 export const listContacts = async () => {
     const res = JSON.parse(await fs.readFile(contactsPath));
