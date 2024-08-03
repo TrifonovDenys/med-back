@@ -6,6 +6,7 @@ import {
     checkLoginUserData,
     checkRestorePasswordUserData,
     checkSignupUserData,
+    checkVerificationData,
 } from '../middlewares/authMiddleware.js';
 
 const authRouter = express.Router();
@@ -19,8 +20,6 @@ const authRouter = express.Router();
 
 authRouter.post('/signup', checkSignupUserData, authController.signup);
 authRouter.get('/verify/:verificationToken', authController.verifyEmail);
-// TODO validation authRouter.get('/verify'
-authRouter.get('/verify', authController.signup);
 authRouter.post('/login', checkLoginUserData, authController.login);
 authRouter.post('/logout', authController.logout);
 authRouter.post('/refresh_token', authController.refreshAccsessToken);

@@ -199,3 +199,15 @@ export const restorePasswordValidator = (data) =>
             }),
         })
         .validate(data);
+
+export const verificationValidator = (data) =>
+    Joi.object()
+        .options({ abortEarly: false })
+        .keys({
+            email: Joi.string().regex(emailRegex).messages({
+                'string.base': '\'email\' should be a type of \'text\'',
+                'string.pattern.base': '\'email\' has incorect pattern \'aa@a.aa\'.',
+                'string.empty': '\'email\' cannot be an empty field',
+            }),
+        })
+        .validate(data);

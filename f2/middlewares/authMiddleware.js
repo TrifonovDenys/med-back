@@ -1,5 +1,5 @@
 import HttpError from '../helpers/HttpError.js';
-import { forgotPasswordValidator, loginUserValidator, restorePasswordValidator, singupUserValidator } from '../schemas/userValidators.js';
+import { forgotPasswordValidator, loginUserValidator, restorePasswordValidator, singupUserValidator, verificationValidator } from '../schemas/userValidators.js';
 import jwtService from '../services/jwtService.js';
 import { checkUserExist, getOneUser } from '../services/userServices.js';
 import catchAsync from '../utils/catchAsync.js';
@@ -60,6 +60,16 @@ export const checkRestorePasswordUserData = catchAsync(async (req, res, next) =>
         throw HttpError(400, `${error.details[0].message}`);
     }
 
+    req.body = value;
+
+    next();
+});
+
+export const checkVerificationData = catchAsync(async (req, res, next) => {
+    const { error, value } = verificationValidator(req.body);
+    if (error) {
+        throw HttpError(400, `${error.details[0].message}`);
+    }
     req.body = value;
 
     next();
