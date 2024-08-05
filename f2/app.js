@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import soketIO from 'socket.io';
 
 import router from './routers.js';
 
@@ -46,7 +47,17 @@ app.use((err, req, res, next) => {
         text: err.stack,
     });
 });
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
     // eslint-disable-next-line no-console
     console.log(`Server is running. Use our API on port: ${process.env.PORT}`);
+});
+
+const io = soketIO(server);
+
+io.on('connection', (socket) => {
+    console.log('Socket conected..');
+    socket.emit('message', () => {
+        msg: 'hello from socket!!';
+    });
+    socket.on;
 });

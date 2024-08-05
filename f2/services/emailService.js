@@ -50,7 +50,10 @@ class Email {
             text: convert(html),
         };
 
-        await Email.#initTransport().sendMail(emailConfig);
+        await Email.#initTransport()
+            .sendMail(emailConfig)
+            .then(() => console.log('email send succsess'))
+            .catch((err) => console.log('err.message :>> ', err.message));
     }
 
     async sendHello() {

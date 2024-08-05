@@ -108,9 +108,7 @@ export const checkUserExist = async (filter) => {
     if (userExists) throw HttpError(409, 'User exists..');
 };
 
-export const getUserByEmail = async (email) => {
-    await User.findOne({ email });
-};
+export const getUserByEmail = (email) => User.findOne({ email });
 
 export const signupUser = async (userData) => {
     // скидываем права нового пльзоватля до user
@@ -142,12 +140,10 @@ export const loginUser = async (userData) => {
     const user = await User.findOne({ email: userData.email }).select('+password');
 
     if (!user) throw HttpError(401, 'Not registrated');
-    // throw HttpError(401, 'Not autorized');
 
     const passwordIsValid = await user.checkPassword(userData.password, user.password);
 
     if (!passwordIsValid) throw HttpError(401, 'Wrong password');
-    // throw HttpError(401, 'Not autorized');
 
     user.password = undefined;
 
@@ -176,4 +172,6 @@ export const resetPassword = async (otp, newPassword) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();
+    user.password = undefined;
+    return user;
 };

@@ -73,7 +73,7 @@ const authController = {
         const user = await getUserByEmail(req.body.email);
         if (!user) {
             return res.status(200).json({
-                msg: 'Password reset instruction sent via email',
+                msg: 'email not found',
             });
         }
         const otp = await user.createPasswordResetToken();
@@ -96,10 +96,20 @@ const authController = {
         });
     }),
     restorePassword: catchAsync(async (req, res) => {
-        await resetPassword(req.params.otp, req.body.password);
-        res.status(200).json({
-            msg: 'Success',
-        });
+        const user = await resetPassword(req.params.otp, req.body.password);
+        const { accessToken, refreshToken } = await jwtService.generateAccessAndRefreshTokens(user.id);
+
+        res.status(200)
+            .cookie('refreshtoken', refreshToken, {
+                maxAge: MAX_REFRESH_TOKEN_AGE,
+                httpOnly: true,
+                secure: true,
+            })
+            .json({
+                msg: 'Password change succsessfuly',
+                user,
+                accessToken,
+            });
     }),
 };
 export default authController;
